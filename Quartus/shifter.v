@@ -12,8 +12,8 @@ always @ (control, data)
 begin
 	case (control)
 		2'b00: dataOut = data;
-		2'b01: dataOut = data;
-		2'b10: dataOut = data;
+		2'b01: dataOut = {data[31], data[30:0] >> 1};
+		2'b10: dataOut = data << 8;
 		2'b11: dataOut = data;
 	endcase
 
