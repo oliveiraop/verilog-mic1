@@ -13,9 +13,9 @@ module MIC1(
 );
 
 input clock;
-input [31:0] ROM_data, RAM_data, C, MAR;
+input [31:0] ROM_data, RAM_data, C;
 input [15:0] MIR;
-output [31:0] A, B, PC;
+output [31:0] A, B, PC, MAR;
 reg [31:0]MDR_in;
 output [31:0] MDR, MBR;
 
