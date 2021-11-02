@@ -50,7 +50,7 @@ module ULA(
 			8'b00110001: out = 32'd1;
 			//| -1
 			8'b00110010: out = ~32'd1 + 32'd1;
-			default: out = 32'b0;
+			default: out = 32'bX;
 		endcase
 	end
 
