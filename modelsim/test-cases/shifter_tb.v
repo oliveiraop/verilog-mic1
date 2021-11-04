@@ -40,13 +40,19 @@ module shifter_tb;
         registerData;
 
         #1 // 4ps
-        setUpInitialState;
+        // check of logical shift at left
+        control = 2'b10;
         registerData;
 
         #1 // 5ps
+        if(dataOut != data << 8) 
+        begin 
+            $error("left shift error"); 
+        end
         registerData;
 
         #1 // 6ps
+        setUpInitialState;
         registerData;
 
         #1 // 7ps
