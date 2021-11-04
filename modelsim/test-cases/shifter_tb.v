@@ -52,19 +52,30 @@ module shifter_tb;
         registerData;
 
         #1 // 6ps
-        setUpInitialState;
+        // check bypass
+        control = 2'b00;
         registerData;
 
         #1 // 7ps
+        if(dataOut != data) 
+        begin 
+            $error("bypass error"); 
+        end
         registerData;
 
         #1 // 8ps
+        control = 2'b11;
         registerData;
 
         #1 // 9ps
+        if(dataOut != data) 
+        begin 
+            $error("bypass error"); 
+        end
         registerData;
 
         #1 // 10ps
+        setUpInitialState;
         registerData;
 
         #1 // 11ps
