@@ -27,12 +27,20 @@ module shifter_tb;
         registerData;
 
         #1 // 2ps
+        // check of arithmetic shift at right 
+        data = {(32/4){4'b1000}};
+        control = 2'b01;
         registerData;
 
         #1 // 3ps
+        if(dataOut != {data[31], data[30:0] >> 1}) 
+        begin 
+            $error("right shift error"); 
+        end
         registerData;
 
         #1 // 4ps
+        setUpInitialState;
         registerData;
 
         #1 // 5ps
@@ -100,7 +108,7 @@ module shifter_tb;
             inpectionsCounter = inpectionsCounter + 1;
             $fstrobe(
                 fileLog, 
-                "%-d;%b;%-d;%-d", 
+                "%-d;%b;%b;%b", 
                 inpectionsCounter, control, data, dataOut
             );
         end

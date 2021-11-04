@@ -75,5 +75,4 @@ modelsim/cov*/
 modelsim/transcript*
 modelsim/sc_dpiheader.h
 modelsim/vsim.dbg
-modelsim/log/*
 !modelsim/log/.gitkeep
