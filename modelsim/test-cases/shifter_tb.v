@@ -90,8 +90,8 @@ module shifter_tb;
 
     task setUpInitialState;
         begin
-            control = 31'd0;
-            data = 31'd0;
+            control = 32'd0;
+            data = 32'd0;
         end
     endtask
 
