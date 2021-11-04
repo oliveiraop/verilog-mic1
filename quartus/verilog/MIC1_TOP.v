@@ -54,23 +54,21 @@ module MIC1_TOP(
 		.clock(!clock),
 		.out(MIR)
 	);
-	/*
-	rom program_mem(
+
+	rom_program_mem	rom_program_mem_inst (
 		.address(PC),
 		.clock(clock),
 		.q(MBR_in)
 	);
-
-	ram data_mem(
-		.address(MAR[31:2]),
+	
+	
+ram_data_mem	ram_data_mem_inst (
+		.address({2'b00, MAR[31:2]} ),
 		.clock(clock),
 		.q(MDR_in),
 		.data(MDR_out),
 		.wren(MIR[6])
 	);
-		
-	*/
-
 
 
 endmodule
