@@ -27,7 +27,6 @@ quartus/output_files
 *.cmp
 *.done
 *.eqn
-*.hex
 *.html
 *.jdi
 *.jpg
