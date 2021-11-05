@@ -62,7 +62,7 @@ module MIC1_TOP(
 	);
 	
 	
-ram_data_mem	ram_data_mem_inst (
+	ram_data_mem ram_data_mem_inst (
 		.address({2'b00, MAR[31:2]} ),
 		.clock(clock),
 		.q(MDR_in),
