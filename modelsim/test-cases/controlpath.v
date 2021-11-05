@@ -6,7 +6,12 @@ module controlpath;
     reg N, Z, clk, rst;
 	reg [7:0] MBR;
 	wire [8:0] MPC;
-	reg [35:24] MIR;
+	
+    wire [35:24] MIR;
+    reg [8:0] next_addr;
+    reg jumpN, jumpZ, jump;
+
+    assign MIR = {next_addr, jump, jumpN, jumpZ}
 
     integer fileLog;
     integer inpectionsCounter = -1;
@@ -21,99 +26,49 @@ module controlpath;
         .MPC(MPC)
     );
 
+
     initial begin
+        @(posedge clk) 
+
         $display("running tests");
         fileLog = $fopen(LOGGING_PATH);
         registerDataHeader;
         registerData;
 
-        #1 // 1ps
+        @(posedge clk) // 1ps
         setUpInitialState;
         registerData;
 
-        #1 // 2ps
-        registerData;
+        @(negedge clk) // 2ps
+        rst = 1'b1;
 
-        #1 // 3ps
-        if(false) 
+        @(posedge clk) // 3ps
+        if(MPC != 0) 
         begin 
             $error("error"); 
-        end
+        end        
         registerData;
 
-        #1 // 4ps
-        registerData;
-
-        #1 // 5ps
-        if(false)
-        begin 
-            $error("error"); 
-        end
-        registerData;
-
-        #1 // 6ps
-        registerData;
-
-        #1 // 7ps
-        if(false) 
-        begin 
-            $error("error"); 
-        end
-        registerData;
-
-        #1 // 8ps
-        registerData;
-
-        #1 // 9ps
-        if(false) 
-        begin 
-            $error("error"); 
-        end
-        registerData;
-
-        #1 // 10ps
-        registerData;
-
-        #1 // 11ps
-        registerData;
-
-        #1 // 12ps
-        registerData;
-
-        #1 // 13ps
-        registerData;
-
-        #1 // 14ps
-        registerData;
-
-        #1 // 15ps
-        registerData;
-
-        #1 // 16ps
-        registerData;
-
-        #1 // 17ps
-        registerData;
-
-        #1 // 18ps
-        registerData;
-
-        #1 // 19ps
-        registerData;
-
-        #1 // 20ps
-        registerData;
-*/
-        # 1 // 21ps 
+        # 1 // 4ps 
         $fclose(fileLog);
         $display("ended");
     end
 
+
+    always @(*) begin
+        #1 clk = ~clk;
+    end
+
     task setUpInitialState;
         begin
-            select = 8'b0;
-            A = 32'b0;
-            B = 32'b0;
+            rst = 1'b0;            
+            N = 1'b0;
+            Z = 1'b0;
+	        MBR = 8'b0;
+	        next_addr = 9'b0; 
+            jump = 1'b0; 
+            jumpN = 1'b0; 
+            jumpZ = 1'b0; 
         end
     endtask
 
@@ -122,8 +77,8 @@ module controlpath;
             inpectionsCounter = inpectionsCounter + 1;
             $fstrobe(
                 fileLog, 
-                "%-d;%-d;%-d;%-d;%-d;%b;%b", 
-                inpectionsCounter, select, A, B, out, N, Z
+                "%-d;%b;%b;%b;%b;%b;%b;%b;%-d;%-d;%-d", 
+                inpectionsCounter,clk,rst,N,Z,jump,jumpN,jumpZ,MBR,next_addr,MPC
             );
         end
     endtask
@@ -132,8 +87,7 @@ module controlpath;
         begin
             $fdisplay(
                 fileLog, 
-                "inpectionsCounter;select;A;B;out;N;Z"
-            );
+                "inpectionsCounter;clk;rst;N;Z;jump;jumpN;jumpZ;MBR;next_addr;MPC");
         end
     endtask
 
