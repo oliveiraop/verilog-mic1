@@ -39,7 +39,7 @@ module controlpath(
 			if (jump )
 				MPC <= { high_bit, next_addr[7:0] }; 
 			else
-				MPC <= { high_bit, next_addr[7:0] || MBR}; 
+				MPC <= { high_bit, next_addr[7:0] | MBR}; 
 		end
 	end
 
