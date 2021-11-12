@@ -38,9 +38,9 @@ module ULA_tb;
         registerData;
 
         #1 // 3ps
-        if(out != A) 
+        if(out != A || N == 1 || Z == 1) 
         begin 
-            $error("bypass A error"); 
+            $error("[ULA_tb] bypass A error"); 
         end
         registerData;
 
@@ -50,37 +50,32 @@ module ULA_tb;
         registerData;
 
         #1 // 5ps
-        if(out != B)
+        if(out != B || N == 1 || Z == 1)
         begin 
-            $error("bypass B error"); 
+            $error("[ULA_tb] bypass B error"); 
         end
         registerData;
-/*
+
         #1 // 6ps
-        // check bypass
-        control = 2'b00;
+        //| ~A
+		select = 8'b00011010; 
         registerData;
 
         #1 // 7ps
-        if(dataOut != data) 
+        if(out != ~A || N == 0 || Z == 1) 
         begin 
-            $error("bypass error"); 
+            $error("[ULA_tb] ~A error"); 
         end
         registerData;
 
         #1 // 8ps
-        control = 2'b11;
         registerData;
 
         #1 // 9ps
-        if(dataOut != data) 
-        begin 
-            $error("bypass error"); 
-        end
+        
         registerData;
 
         #1 // 10ps
-        setUpInitialState;
         registerData;
 
         #1 // 11ps
@@ -112,7 +107,7 @@ module ULA_tb;
 
         #1 // 20ps
         registerData;
-*/
+
         # 1 // 21ps 
         $fclose(fileLog);
         $display("ended");
