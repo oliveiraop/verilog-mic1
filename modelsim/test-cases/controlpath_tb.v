@@ -72,8 +72,8 @@ module controlpath_tb;
             inpectionsCounter = inpectionsCounter + 1;
             $fstrobe(
                 fileLog, 
-                "%-d;%b;%b;%b;%b;%b;%b;%b;%-d;%-d;%-d", 
-                inpectionsCounter,clk,rst,N,Z,jump,jumpN,jumpZ,MBR,next_addr,MPC
+                "%-d;%b;%b;%b;%b;%-d;%b;%b;%b;%-d;%-d", 
+                inpectionsCounter,clk,rst,N,Z,next_addr,jump,jumpN,jumpZ,MBR,MPC
             );
         end
     endtask
@@ -82,7 +82,7 @@ module controlpath_tb;
         begin
             $fdisplay(
                 fileLog, 
-                "inpectionsCounter;clk;rst;N;Z;jump;jumpN;jumpZ;MBR;next_addr;MPC");
+                "inpectionsCounter;clk;rst;N;Z;next_addr;jump;jumpN;jumpZ;MBR;MPC");
         end
     endtask
 
