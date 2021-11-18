@@ -1,7 +1,7 @@
 `timescale 1ps / 1ps
 
-module controlpath;
-    parameter LOGGING_PATH = "./test-cases/log/controlpath.csv";
+module controlpath_tb;
+    parameter LOGGING_PATH = "./test-cases/log/controlpath_tb.csv";
 
     reg N, Z, clk, rst;
 	reg [7:0] MBR;
@@ -11,7 +11,7 @@ module controlpath;
     reg [8:0] next_addr;
     reg jumpN, jumpZ, jump;
 
-    assign MIR = {next_addr, jump, jumpN, jumpZ}
+    assign MIR = {next_addr, jump, jumpN, jumpZ};
 
     integer fileLog;
     integer inpectionsCounter = -1;
@@ -26,41 +26,36 @@ module controlpath;
         .MPC(MPC)
     );
 
+    always #1 clk = ~clk;
 
     initial begin
-        @(posedge clk) 
-
+        // 0ps
         $display("running tests");
         fileLog = $fopen(LOGGING_PATH);
         registerDataHeader;
         registerData;
 
-        @(posedge clk) // 1ps
+        #1 // 1ps
         setUpInitialState;
         registerData;
 
-        @(negedge clk) // 2ps
-        rst = 1'b1;
-
-        @(posedge clk) // 3ps
-        if(MPC != 0) 
-        begin 
-            $error("error"); 
-        end        
+        #2 // 2ps // posedge
         registerData;
 
-        # 1 // 4ps 
+        #3 // 3ps // negedge     
+        registerData;
+
+        # 1 // 4ps // posedge
         $fclose(fileLog);
         $display("ended");
+        $stop;
     end
 
-
-    always @(*) begin
-        #1 clk = ~clk;
-    end
+        
 
     task setUpInitialState;
         begin
+            clk = 1'b0;
             rst = 1'b0;            
             N = 1'b0;
             Z = 1'b0;
