@@ -36,7 +36,7 @@ module controlpath_tb;
         registerData;
 
         // inspeção 1 (setup inicial)
-        #1 // 1ps // clk = 1'b0 
+        #1 
         setUpInitialState;
         registerData;
 
@@ -61,8 +61,6 @@ module controlpath_tb;
         setUpInitialState;
         
         // inspeção 3 (MPC == next_addr)
-        // jump = 1; MPC <= { high_bit, next_addr[7:0] };  
-        // high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8]
         @(posedge clk); 
         #1 
         jump = 1'b1;
@@ -85,8 +83,6 @@ module controlpath_tb;
         setUpInitialState;      
 
         // inspeção 4 (MPC == higthbit = 1 e next_addr completando com 0)
-        // jump = 1; MPC <= { high_bit, next_addr[7:0] };  
-        // high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8]
         @(posedge clk); 
         #1 
         jump = 1'b1;
@@ -103,6 +99,55 @@ module controlpath_tb;
         if(MPC != { 1'b1, next_addr[7:0] }) 
         begin 
             $error("[controlpath] N = 1, Z = 0, jump = 1 error"); 
+        end
+        registerData;
+
+        @(negedge clk);
+        setUpInitialState;        
+        
+        // inspeção 5 (MPC <= { high_bit, next_addr[7:0] | MBR}) = 011110101
+        @(posedge clk); 
+        #1 
+        jump = 1'b0;
+        N = 1'b0;
+        Z = 1'b0;
+        MBR = 8'b01010101;
+        next_addr = {0, {4{1'b1}}, {4{1'b0}}}; 
+
+        @(posedge clk); 
+        #1
+
+        @(posedge clk); 
+        #1
+        if(MPC != { 0, next_addr[7:0] | MBR}) 
+        begin 
+            $error("[controlpath] N = 0, Z = 0, jump = 0 error"); 
+        end
+        registerData;
+
+        @(negedge clk);
+        setUpInitialState;      
+
+        // inspeção 6 (MPC <= { high_bit, next_addr[7:0] | MBR}) = 111110101
+        // jump = 0; MPC <= { high_bit, next_addr[7:0] };  
+        // high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8]
+        @(posedge clk); 
+        #1 
+        jump = 1'b0;
+        N = 1'b0;
+        jumpZ = 1'b1;
+        Z = 1'b1;
+        MBR = 8'b01010101;
+        next_addr = {0, {4{1'b1}}, {4{1'b0}}};
+
+        @(posedge clk); 
+        #1
+
+        @(posedge clk); 
+        #1
+        if(MPC != { 1, next_addr[7:0] | MBR}) 
+        begin 
+            $error("[controlpath] N = 0, Z = 1, jump = 0 error"); 
         end
         registerData;
 
