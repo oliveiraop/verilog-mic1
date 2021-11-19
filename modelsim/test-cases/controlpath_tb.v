@@ -26,29 +26,96 @@ module controlpath_tb;
         .MPC(MPC)
     );
 
-    always #1 clk = ~clk;
+    always #2 clk = ~clk;
 
     initial begin
-        // 0ps
+        // inspeção 0 (caso default)
         $display("running tests");
         fileLog = $fopen(LOGGING_PATH);
         registerDataHeader;
         registerData;
 
-        #1 // 1ps
+        // inspeção 1 (setup inicial)
+        #1 // 1ps // clk = 1'b0 
         setUpInitialState;
         registerData;
 
-        #2 // 2ps // posedge
+        // inspeção 2 (reset)
+        @(posedge clk); 
+        #1 
+        rst = 1'b1;         
         registerData;
 
-        #3 // 3ps // negedge     
+        @(posedge clk); 
+        #1
+
+        @(posedge clk); 
+        #1
+        if(MPC != 0) 
+        begin 
+            $error("[controlpath] reset error"); 
+        end
         registerData;
 
-        # 1 // 4ps // posedge
+        @(negedge clk);
+        setUpInitialState;
+        
+        // inspeção 3 (MPC == next_addr)
+        // jump = 1; MPC <= { high_bit, next_addr[7:0] };  
+        // high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8]
+        @(posedge clk); 
+        #1 
+        jump = 1'b1;
+        N = 1'b0;
+        Z = 1'b0;
+        next_addr = {9{1'b1}};
+
+        @(posedge clk); 
+        #1
+
+        @(posedge clk); 
+        #1
+        if(MPC != next_addr) 
+        begin 
+            $error("[controlpath] N = 0, Z = 0, jump = 1 error"); 
+        end
+        registerData;
+
+        @(negedge clk);
+        setUpInitialState;      
+
+        // inspeção 4 (MPC == higthbit = 1 e next_addr completando com 0)
+        // jump = 1; MPC <= { high_bit, next_addr[7:0] };  
+        // high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8]
+        @(posedge clk); 
+        #1 
+        jump = 1'b1;
+        jumpN = 1'b1;
+        N = 1'b1;
+        Z = 1'b0;
+        next_addr = {9{1'b0}};
+
+        @(posedge clk); 
+        #1
+
+        @(posedge clk); 
+        #1
+        if(MPC != { 1'b1, next_addr[7:0] }) 
+        begin 
+            $error("[controlpath] N = 1, Z = 0, jump = 1 error"); 
+        end
+        registerData;
+
+        @(negedge clk);
+        setUpInitialState;        
+
+        
+
+        # 1 
         $fclose(fileLog);
         $display("ended");
-        $stop;
+        
+        #40 $stop;
     end
 
         
