@@ -112,14 +112,14 @@ module controlpath_tb;
         N = 1'b0;
         Z = 1'b0;
         MBR = 8'b01010101;
-        next_addr = {0, {4{1'b1}}, {4{1'b0}}}; 
+        next_addr = {1'b0, {4{1'b1}}, {4{1'b0}}}; 
 
         @(posedge clk); 
         #1
 
         @(posedge clk); 
         #1
-        if(MPC != { 0, next_addr[7:0] | MBR}) 
+        if(MPC != { 1'b0, next_addr[7:0] | MBR}) 
         begin 
             $error("[controlpath] N = 0, Z = 0, jump = 0 error"); 
         end
@@ -138,14 +138,14 @@ module controlpath_tb;
         jumpZ = 1'b1;
         Z = 1'b1;
         MBR = 8'b01010101;
-        next_addr = {0, {4{1'b1}}, {4{1'b0}}};
+        next_addr = {1'b0, {4{1'b1}}, {4{1'b0}}};
 
         @(posedge clk); 
         #1
 
         @(posedge clk); 
         #1
-        if(MPC != { 1, next_addr[7:0] | MBR}) 
+        if(MPC != { 1'b1, next_addr[7:0] | MBR}) 
         begin 
             $error("[controlpath] N = 0, Z = 1, jump = 0 error"); 
         end
