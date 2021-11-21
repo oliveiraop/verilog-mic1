@@ -35,7 +35,6 @@ module ULA_tb;
         B = 2;
         // bypass para a entrada A
         select = 8'b00011000;
-        registerData;
 
         #1 // 3ps
         if(out != A || N == 1 || Z == 1) 
@@ -47,7 +46,6 @@ module ULA_tb;
         #1 // 4ps
         // bypass para a entrada B
         select = 8'b00010100;
-        registerData;
 
         #1 // 5ps
         if(out != B || N == 1 || Z == 1)
@@ -59,7 +57,6 @@ module ULA_tb;
         #1 // 6ps
         //| ~A
 		select = 8'b00011010; 
-        registerData;
 
         #1 // 7ps
         if(out != ~A || N == 0 || Z == 1) 
@@ -71,7 +68,6 @@ module ULA_tb;
         #1 // 8ps
         //| ~B
 		select = 8'b00101100;
-        registerData;
 
         #1 // 9ps
         if(out != ~B || N == 0 || Z == 1) 
@@ -83,7 +79,6 @@ module ULA_tb;
         #1 // 10ps
         //| A + B
 		select = 8'b00111100;
-        registerData;
 
         #1 // 11ps
         if(out != A + B || N == 1 || Z == 1) 
@@ -95,7 +90,6 @@ module ULA_tb;
         #1 // 12ps
         //| A + B + 1
 		select = 8'b00111101;
-        registerData;
 
         #1 // 13ps
         if(out != A + B + 1 || N == 1 || Z == 1) 
@@ -107,7 +101,6 @@ module ULA_tb;
         #1 // 14ps
         //| A + 1
 		select = 8'b00111001;
-        registerData;
 
         #1 // 15ps
         if(out != A + 1 || N == 1 || Z == 1) 
@@ -119,7 +112,6 @@ module ULA_tb;
         #1 // 16ps
         //| B + 1
 		select = 8'b00110101;
-        registerData;
 
         #1 // 17ps
         if(out != B + 1 || N == 1 || Z == 1) 
@@ -131,7 +123,6 @@ module ULA_tb;
         #1 // 18ps
         //| B - A
 		select = 8'b00111111;
-        registerData;
 
         #1 // 19ps
         if(out != B - A || N == 1 || Z == 1) 
@@ -143,7 +134,6 @@ module ULA_tb;
         #1 // 20ps
         //| B - 1
 		select = 8'b00110110;
-        registerData;
 
         #1 // 21ps
         if(out != B - 1 || N == 1 || Z == 1) 
@@ -155,7 +145,6 @@ module ULA_tb;
         #1 // 22ps
         //| -A
 		select = 8'b00111011;
-        registerData;
 
         #1 // 23ps
         if(out != ~A + 31'd1 || N == 0 || Z == 1) 
@@ -167,7 +156,6 @@ module ULA_tb;
         #1 // 24ps
         //|	A AND B
 		select = 8'b00001100;
-        registerData;
 
         #1 // 25ps
         if(out != A & B || N == 1 || Z == 0) 
@@ -179,7 +167,6 @@ module ULA_tb;
         #1 // 26ps
         //| A OR B
 		select = 8'b00011100;
-        registerData;
 
         #1 // 27ps
         if(out != (A | B) || N == 1 || Z == 1) 
@@ -191,7 +178,6 @@ module ULA_tb;
         #1 // 28ps
         //| 0
 		select = 8'b00010000;
-        registerData;
 
         #1 // 29ps
         if(out != 32'd0 || N == 1 || Z == 0) 
@@ -203,7 +189,6 @@ module ULA_tb;
         #1 // 30ps
         //| 1
 		select = 8'b00110001;
-        registerData;
 
         #1 // 31ps
         if(out != 32'd1 || N == 1 || Z == 1) 
@@ -215,7 +200,6 @@ module ULA_tb;
         #1 // 32ps
         //| -1
 		select = 8'b00110010; 
-        registerData;
 
         #1 // 33ps
         if(out != ~32'd1 + 32'd1 || N == 0 || Z == 1) 

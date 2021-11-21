@@ -30,7 +30,6 @@ module shifter_tb;
         // check of arithmetic shift at right 
         data = {(32/4){4'b1000}};
         control = 2'b01;
-        registerData;
 
         #1 // 3ps
         if(dataOut != {data[31], data[30:0] >> 1}) 
@@ -42,7 +41,6 @@ module shifter_tb;
         #1 // 4ps
         // check of logical shift at left
         control = 2'b10;
-        registerData;
 
         #1 // 5ps
         if(dataOut != data << 8) 
@@ -54,7 +52,6 @@ module shifter_tb;
         #1 // 6ps
         // check bypass
         control = 2'b00;
-        registerData;
 
         #1 // 7ps
         if(dataOut != data) 
@@ -65,7 +62,6 @@ module shifter_tb;
 
         #1 // 8ps
         control = 2'b11;
-        registerData;
 
         #1 // 9ps
         if(dataOut != data) 
@@ -76,7 +72,6 @@ module shifter_tb;
 
         #1 // 10ps
         setUpInitialState;
-        registerData;
 
         #1 // 11ps
         registerData;
