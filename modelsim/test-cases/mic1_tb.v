@@ -9,6 +9,8 @@ module mic1_tb;
 	wire [31:0] A, B, PC, MAR;
 	wire [31:0] MDR, MBR;
 
+    reg [35:0] rom;
+
     integer fileLog;
     integer inpectionsCounter = -1;
 
@@ -28,6 +30,8 @@ module mic1_tb;
 
     always #2 clock = ~clock;
 
+    assign MIR = rom[15:0];
+
     initial begin
         // inspeção 0 (caso default)
         $display("running tests");
@@ -40,23 +44,22 @@ module mic1_tb;
         setUpInitialState;
         registerData;
 
-        // inspeção 2 (caso feliz: tudo ativo)
+        // inspeção 2 (PC=PC+1;goto 0x40)
         @(posedge clock)
         #1
-        // dataIn = {32{1'b1}};
+        rom = 36'b001000000_000_00_110101_000000100_000_0001;
 
         @(posedge clock)
         #1
-        // if(alwaysOnDataOut != {32{1'b1}} || dataOut != {32{1'b1}}) begin 
-        //     $error("[register] dataIn = 1...1, inEnable = 1, outEnable = 1 error"); 
-        // end
+        if(0) begin 
+            $error("[mic1] MIR error"); 
+        end
         registerData;
 
-        @(negedge clock)
-        setUpInitialState;
-        
+        // @(negedge clock)
+        // setUpInitialState;
        
-        # 1
+        #1
         $fclose(fileLog);
         $display("ended");
         
