@@ -10,7 +10,7 @@ import pandas as pd
 # In[2]:
 
 
-df=pd.read_csv('../test-cases/log/mic1_tb.csv', delimiter=';')
+df=pd.read_csv('test-cases/log/mic1_tb.csv', delimiter=';')
 
 
 # In[3]:

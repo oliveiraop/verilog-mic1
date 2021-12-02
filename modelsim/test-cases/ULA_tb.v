@@ -4,7 +4,7 @@ module ULA_tb;
     parameter LOGGING_PATH = "./test-cases/log/ULA_tb.csv";
 
     reg [31:0] A, B;
-	reg [7:0] select;
+	reg [5:0] select;
 	wire [31:0] out;
 	wire N, Z;
 
@@ -34,7 +34,7 @@ module ULA_tb;
         A = 1;
         B = 2;
         // bypass para a entrada A
-        select = 8'b00011000;
+        select = 6'b011000;
 
         #1 // 3ps
         if(out != A || N == 1 || Z == 1) 
@@ -45,7 +45,7 @@ module ULA_tb;
 
         #1 // 4ps
         // bypass para a entrada B
-        select = 8'b00010100;
+        select = 6'b010100;
 
         #1 // 5ps
         if(out != B || N == 1 || Z == 1)
@@ -56,7 +56,7 @@ module ULA_tb;
 
         #1 // 6ps
         //| ~A
-		select = 8'b00011010; 
+		select = 6'b011010; 
 
         #1 // 7ps
         if(out != ~A || N == 0 || Z == 1) 
@@ -67,7 +67,7 @@ module ULA_tb;
 
         #1 // 8ps
         //| ~B
-		select = 8'b00101100;
+		select = 6'b101100;
 
         #1 // 9ps
         if(out != ~B || N == 0 || Z == 1) 
@@ -78,7 +78,7 @@ module ULA_tb;
 
         #1 // 10ps
         //| A + B
-		select = 8'b00111100;
+		select = 6'b111100;
 
         #1 // 11ps
         if(out != A + B || N == 1 || Z == 1) 
@@ -89,7 +89,7 @@ module ULA_tb;
 
         #1 // 12ps
         //| A + B + 1
-		select = 8'b00111101;
+		select = 6'b111101;
 
         #1 // 13ps
         if(out != A + B + 1 || N == 1 || Z == 1) 
@@ -100,7 +100,7 @@ module ULA_tb;
 
         #1 // 14ps
         //| A + 1
-		select = 8'b00111001;
+		select = 6'b111001;
 
         #1 // 15ps
         if(out != A + 1 || N == 1 || Z == 1) 
@@ -111,7 +111,7 @@ module ULA_tb;
 
         #1 // 16ps
         //| B + 1
-		select = 8'b00110101;
+		select = 6'b110101;
 
         #1 // 17ps
         if(out != B + 1 || N == 1 || Z == 1) 
@@ -122,7 +122,7 @@ module ULA_tb;
 
         #1 // 18ps
         //| B - A
-		select = 8'b00111111;
+		select = 6'b111111;
 
         #1 // 19ps
         if(out != B - A || N == 1 || Z == 1) 
@@ -133,7 +133,7 @@ module ULA_tb;
 
         #1 // 20ps
         //| B - 1
-		select = 8'b00110110;
+		select = 6'b110110;
 
         #1 // 21ps
         if(out != B - 1 || N == 1 || Z == 1) 
@@ -144,7 +144,7 @@ module ULA_tb;
 
         #1 // 22ps
         //| -A
-		select = 8'b00111011;
+		select = 6'b111011;
 
         #1 // 23ps
         if(out != ~A + 31'd1 || N == 0 || Z == 1) 
@@ -155,7 +155,7 @@ module ULA_tb;
 
         #1 // 24ps
         //|	A AND B
-		select = 8'b00001100;
+		select = 6'b001100;
 
         #1 // 25ps
         if(out != A & B || N == 1 || Z == 0) 
@@ -166,7 +166,7 @@ module ULA_tb;
 
         #1 // 26ps
         //| A OR B
-		select = 8'b00011100;
+		select = 6'b011100;
 
         #1 // 27ps
         if(out != (A | B) || N == 1 || Z == 1) 
@@ -177,7 +177,7 @@ module ULA_tb;
 
         #1 // 28ps
         //| 0
-		select = 8'b00010000;
+		select = 6'b010000;
 
         #1 // 29ps
         if(out != 32'd0 || N == 1 || Z == 0) 
@@ -188,7 +188,7 @@ module ULA_tb;
         
         #1 // 30ps
         //| 1
-		select = 8'b00110001;
+		select = 6'b110001;
 
         #1 // 31ps
         if(out != 32'd1 || N == 1 || Z == 1) 
@@ -199,7 +199,7 @@ module ULA_tb;
         
         #1 // 32ps
         //| -1
-		select = 8'b00110010; 
+		select = 6'b110010; 
 
         #1 // 33ps
         if(out != ~32'd1 + 32'd1 || N == 0 || Z == 1) 
@@ -215,7 +215,7 @@ module ULA_tb;
 
     task setUpInitialState;
         begin
-            select = 8'b0;
+            select = 6'b0;
             A = 32'b0;
             B = 32'b0;
         end

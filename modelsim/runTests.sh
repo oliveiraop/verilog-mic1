@@ -1,4 +1,4 @@
-FILE=ULA_tb
+FILE=mic1_tb
 vsim -c -do "
     vsim work.${FILE}
     run -all
