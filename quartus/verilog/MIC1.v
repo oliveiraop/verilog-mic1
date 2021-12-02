@@ -9,7 +9,12 @@ module MIC1(
 	PC,
 	MBR,
 	A,
-	B
+	B,
+	SP_ao, 
+	TOS_ao, 
+	OPC_ao, 
+	CPP_ao, 
+	LV_ao
 );
 
 	input clock;
@@ -17,6 +22,7 @@ module MIC1(
 	input [15:0] MIR;
 	output [31:0] A, B, PC, MAR;
 	output [31:0] MDR, MBR;
+	output [31:0] SP_ao, TOS_ao, OPC_ao, CPP_ao, LV_ao; 
 
 	reg [31:0] MDR_in;
 
@@ -55,7 +61,8 @@ module MIC1(
 		.dataIn(C),
 		.inEnable(OPC_en),
 		.outEnable(OPC_out_en),
-		.dataOut(B)
+		.dataOut(B),
+		.alwaysOnDataOut(OPC_ao)
 	);
 
 	register TOS_REG(
@@ -63,7 +70,8 @@ module MIC1(
 		.dataIn(C),
 		.inEnable(TOS_en),
 		.outEnable(TOS_out_en),
-		.dataOut(B)
+		.dataOut(B),
+		.alwaysOnDataOut(TOS_ao)
 	);
 
 	register CPP_REG(
@@ -71,7 +79,8 @@ module MIC1(
 		.dataIn(C),
 		.inEnable(CPP_en),
 		.outEnable(CPP_out_en),
-		.dataOut(B)
+		.dataOut(B),
+		.alwaysOnDataOut(CPP_ao)
 	);
 
 	register LV_REG(
@@ -79,7 +88,8 @@ module MIC1(
 		.dataIn(C),
 		.inEnable(LV_en),
 		.outEnable(LV_out_en),
-		.dataOut(B)
+		.dataOut(B),
+		.alwaysOnDataOut(LV_ao)
 	);
 
 	register SP_REG(
@@ -87,7 +97,8 @@ module MIC1(
 		.dataIn(C),
 		.inEnable(SP_en),
 		.outEnable(SP_out_en),
-		.dataOut(B)
+		.dataOut(B),
+		.alwaysOnDataOut(SP_ao)
 	);
 
 	register PC_REG(
