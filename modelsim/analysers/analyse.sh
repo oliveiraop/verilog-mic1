@@ -1,3 +1,4 @@
 #!/bin/bash
 
-echo "analisando"
+echo "analisando mic1"
+python3 analysers/mic1.py
