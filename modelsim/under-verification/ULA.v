@@ -1,7 +1,7 @@
 module ULA(
 	A,
 	B,
-	select,
+	select, //ALERT: este sinal deveria ter tamanho 6 e não 8
 	out,
 	N,
 	Z

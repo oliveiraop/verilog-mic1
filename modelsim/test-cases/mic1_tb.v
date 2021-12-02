@@ -10,10 +10,39 @@ module mic1_tb;
 	wire [31:0] MDR, MBR;
 
     reg [35:0] rom;
+    wire [7:0] ulaSignals;
+    wire [31:0] ula_shifter;
+    reg rst = 1'b0;
+    wire N, Z;
 
     integer fileLog;
     integer inpectionsCounter = -1;
 
+    ULA ula (
+        .A(A),
+        .B(B),
+        .select(ulaSignals[7:0]),
+        .out(ula_shifter),
+        .N(N),
+        .Z(Z)
+    );
+
+    shifter SHIFTER(
+        .control(ulaSignals[7:6]),
+        .data(ula_shifter)
+        // .dataOut(C)
+    );
+
+    controlpath CONTROLPATH(
+        .clk(clock),
+        .rst(rst),
+        .N(N),
+        .Z(Z),
+        .MBR(MBR[7:0]),
+        .MIR(MIR)
+        // .MPC() desnecessário, poir rom está determinado nos casos de teste
+    );
+    
     MIC1 mic1 (
         .clock(clock),
         .ROM_data(ROM_data),
@@ -31,6 +60,8 @@ module mic1_tb;
     always #2 clock = ~clock;
 
     assign MIR = rom[15:0];
+    assign ulaSignals = rom[23:16];
+
 
     initial begin
         // inspeção 0 (caso default)
