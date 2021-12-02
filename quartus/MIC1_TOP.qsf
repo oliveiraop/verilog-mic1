@@ -70,4 +70,23 @@ set_global_assignment -name VERILOG_FILE verilog/ULA.v
 set_global_assignment -name QIP_FILE ram_data_mem.qip
 set_global_assignment -name HEX_FILE MIC1_TOP.hex
 set_global_assignment -name QIP_FILE rom_program_mem.qip
+set_location_assignment PIN_Y2 -to clock
+set_location_assignment PIN_D9 -to control
+set_location_assignment PIN_M5 -to data[7]
+set_location_assignment PIN_M3 -to data[6]
+set_location_assignment PIN_K2 -to data[5]
+set_location_assignment PIN_K1 -to data[4]
+set_location_assignment PIN_K7 -to data[3]
+set_location_assignment PIN_L2 -to data[2]
+set_location_assignment PIN_L1 -to data[1]
+set_location_assignment PIN_L3 -to data[0]
+set_location_assignment PIN_L4 -to enable
+set_location_assignment PIN_J14 -to number[4]
+set_location_assignment PIN_H13 -to number[3]
+set_location_assignment PIN_H14 -to number[2]
+set_location_assignment PIN_F14 -to number[1]
+set_location_assignment PIN_E10 -to number[0]
+set_location_assignment PIN_L5 -to on
+set_location_assignment PIN_M2 -to rs
+set_location_assignment PIN_M1 -to rw
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -19,6 +19,13 @@ module MIC1_TOP(
 	wire [35:0] MIR;
 	wire [31:0] MBR, q_rom, q_ram, A, B, C, MAR, MDR, PC, out;
 	wire [8:0] MPC;
+	reg [7:0] MBR_in;
+	reg [31:0] MDR_in;
+	always @ (*)
+	begin
+		MBR_in = 8'hca;
+		MDR_in = 32'h00000033;
+	end
 
 	virtual_input Input(
 		.switch0(switch0),
@@ -101,7 +108,9 @@ module MIC1_TOP(
 		.out(MIR)
 	);
 
-	rom_program_mem	rom_program_mem_inst (
+	
+
+	/*rom_program_mem	rom_program_mem_inst (
 		.address(PC),
 		.clock(button0),
 		.q(MBR_in)
@@ -114,7 +123,7 @@ module MIC1_TOP(
 		.q(MDR_in),
 		.data(MDR_out),
 		.wren(MIR[6])
-	);
+	);*/
 
 
 endmodule
