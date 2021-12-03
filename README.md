@@ -1,14 +1,14 @@
 Atividades
-1. Utilizando verilog, implementar o modelo de mem´oria
+1. Utilizando verilog, implementar o modelo de memoria
 da IJVM na FPGA disponibilizada.
-2. Fazer valida¸c~ao funcional das ´areas de mem´oria individuais no Modelsim.
-3. Implementar as principais instru¸c~oes da IJVM e realizar
-simula¸c~ao funcional no Modelsim.
-4. Partindo de c´odigos de teste em alto-n´ıvel, compilados
-manualmente para a IJVM, validar a integra¸c~ao entre
-os n´ıveis de macroarquitetura e microarquitetura projetado no Problema #1.
-5. Propor e implementar uma IHM para avalia¸c~ao real dos
-m´odulos projetados na placa DE2-115 remota.
+2. Fazer validacao funcional das areas de memoria individuais no Modelsim.
+3. Implementar as principais instrucoes da IJVM e realizar
+simulacao funcional no Modelsim.
+4. Partindo de codigos de teste em alto-nıvel, compilados
+manualmente para a IJVM, validar a integracao entre
+os nıveis de macroarquitetura e microarquitetura projetado no Problema #1.
+5. Propor e implementar uma IHM para avaliacao real dos
+modulos projetados na placa DE2-115 remota.
 
 
 Os módulos verilog para implementação da iJvM foram divididos: em Datapath, control path, Memória de Microinstrução como principais módulos, mas foram utilizados também, a ram e rom do próprio quartus e o módulo LCD para validar o caminho dos dados passando pelos registradores, que pode ser visto no código verilog anexado junto ao relatório. 
