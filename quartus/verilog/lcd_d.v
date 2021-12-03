@@ -17,7 +17,7 @@
 	input [31:0] MDR_in;
 	input [31:0] MAR_in;
 	input [31:0] PC_in;
-	input [31:0] MBR_in;
+	input [7:0] MBR_in;
 	input [31:0] SP_in;
 	input [31:0] CPP_in;
 	input [31:0] LV_in;
@@ -39,7 +39,7 @@
 	bin2lcd MDR_c(.register(MDR_in), .out0(MDR[0]), .out1(MDR[1]), .out2(MDR[2]), .out3(MDR[3]), .out4(MDR[4]), .out5(MDR[5]), .out6(MDR[6]), .out7(MDR[7]));
 	bin2lcd MAR_c(.register(MAR_in), .out0(MAR[0]), .out1(MAR[1]), .out2(MAR[2]), .out3(MAR[3]), .out4(MAR[4]), .out5(MAR[5]), .out6(MAR[6]), .out7(MAR[7]));
 	bin2lcd PC_c(.register(PC_in), .out0(PC[0]), .out1(PC[1]), .out2(PC[2]), .out3(PC[3]), .out4(PC[4]), .out5(PC[5]), .out6(PC[6]), .out7(PC[7]));
-	bin2lcd MBR_c(.register(MBR_in), .out0(MBR[0]), .out1(MBR[1]), .out2(MBR[2]), .out3(MBR[3]), .out4(MBR[4]), .out5(MBR[5]), .out6(MBR[6]), .out7(MBR[7]));
+	bin2lcd MBR_c(.register( { {24{ 1'b1 }}, MBR_in } ), .out0(MBR[0]), .out1(MBR[1]), .out2(MBR[2]), .out3(MBR[3]), .out4(MBR[4]), .out5(MBR[5]), .out6(MBR[6]), .out7(MBR[7]));
 	bin2lcd SP_c(.register(SP_in), .out0(SP[0]), .out1(SP[1]), .out2(SP[2]), .out3(SP[3]), .out4(SP[4]), .out5(SP[5]), .out6(SP[6]), .out7(SP[7]));
 	bin2lcd CPP_c(.register(CPP_in), .out0(CPP[0]), .out1(CPP[1]), .out2(CPP[2]), .out3(CPP[3]), .out4(CPP[4]), .out5(CPP[5]), .out6(CPP[6]), .out7(CPP[7]));
 	bin2lcd LV_c(.register(LV_in), .out0(LV[0]), .out1(LV[1]), .out2(LV[2]), .out3(LV[3]), .out4(LV[4]), .out5(LV[5]), .out6(LV[6]), .out7(LV[7]));
@@ -863,7 +863,7 @@ else begin
 		enable <= 1'b1;
 		rs <= 1'b1;
 		rw <= 1'b0;
-		data <= 8'h30; //P
+		data <= 8'h50; //P
 		state <= next;
 		nstate <= write56;
 	end

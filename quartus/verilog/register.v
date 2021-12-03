@@ -1,13 +1,14 @@
 module register(
 	clock,
+	reset,
 	dataIn,
 	inEnable,
 	outEnable,
 	dataOut,
 	alwaysOnDataOut
 );
-
-	input clock;
+	parameter resetData = 32'b0;
+	input clock, reset;
 	input [31:0] dataIn;
 	input inEnable;
 	input outEnable;
@@ -20,7 +21,8 @@ module register(
 
 	always @ (posedge clock)
 	begin
-		if (inEnable) data <= dataIn;
+		if (reset) data <= resetData;
+		else if (inEnable) data <= dataIn;
 	end
 
 	always @ (outEnable, data)

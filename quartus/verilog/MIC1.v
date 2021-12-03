@@ -1,5 +1,6 @@
 module MIC1(
 	clock,
+	reset,
 	ROM_data,
 	RAM_data,
 	C,
@@ -7,22 +8,22 @@ module MIC1(
 	MAR,
 	MDR,
 	PC,
-	MBR,
 	A,
 	B,
 	SP_ao, 
 	TOS_ao, 
 	OPC_ao, 
 	CPP_ao, 
-	LV_ao
+	LV_ao,
+	MBR_ao
 );
 
-	input clock;
+	input clock, reset;
 	input [31:0] ROM_data, RAM_data, C;
 	input [15:0] MIR;
 	output [31:0] A, B, PC, MAR;
-	output [31:0] MDR, MBR;
-	output [31:0] SP_ao, TOS_ao, OPC_ao, CPP_ao, LV_ao; 
+	output [31:0] MDR;
+	output [31:0] SP_ao, TOS_ao, OPC_ao, CPP_ao, LV_ao, MBR_ao;
 
 	reg [31:0] MDR_in;
 
@@ -40,15 +41,9 @@ module MIC1(
 	reg H_out_en, OPC_out_en, TOS_out_en, CPP_out_en, LV_out_en, SP_out_en, 
 		PC_out_en, MDR_out_en, MAR_out_en, MBR_out_en, MBRU_out_en;
 
-	wire [31:0] MBR_out;
-
-	assign MBR = MBRU_out_en ? 
-		{{24{MBR_out[7]}}, MBR_out[7:0]} : 
-		MBR_out_en ? 
-			{{24{1'b0}}, MBR_out[7:0]} : 32'bZ;
-
 	register H_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(H_en),
 		.outEnable(H_out_en),
@@ -58,6 +53,7 @@ module MIC1(
 
 	register OPC_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(OPC_en),
 		.outEnable(OPC_out_en),
@@ -67,6 +63,7 @@ module MIC1(
 
 	register TOS_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(TOS_en),
 		.outEnable(TOS_out_en),
@@ -76,6 +73,7 @@ module MIC1(
 
 	register CPP_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(CPP_en),
 		.outEnable(CPP_out_en),
@@ -85,6 +83,7 @@ module MIC1(
 
 	register LV_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(LV_en),
 		.outEnable(LV_out_en),
@@ -94,15 +93,18 @@ module MIC1(
 
 	register SP_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(SP_en),
 		.outEnable(SP_out_en),
 		.dataOut(B),
 		.alwaysOnDataOut(SP_ao)
 	);
+	defparam SP_REG.resetData = 32'hffffffff;
 
 	register PC_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(PC_en),
 		.outEnable(PC_out_en),
@@ -112,6 +114,7 @@ module MIC1(
 
 	register MDR_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(MDR_in),
 		.inEnable(MDR_en),
 		.outEnable(MDR_out_en),
@@ -121,6 +124,7 @@ module MIC1(
 
 	register MAR_REG(
 		.clock(clock),
+		.reset(reset),
 		.dataIn(C),
 		.inEnable(MAR_en),
 		.outEnable(MAR_out_en),
@@ -130,22 +134,24 @@ module MIC1(
 
 	register MBR_REG(
 		.clock(clock),
-		.dataIn(ROM_data),
+		.reset(reset),
+		.dataIn({{24{1'b0}},ROM_data}),
 		.inEnable(MIR[4]),
 		.outEnable(MBR_out_en),
-		.dataOut(MBR_out),
-		.alwaysOnDataOut(MBR)
+		.dataOut(B),
+		.alwaysOnDataOut(MBR_ao)
 	);
 
-	always @ (MIR[3:0], A, RAM_data)
+
+	always @ (MIR[3:0], C, RAM_data)
 	begin
-		if (MIR[5])
+		if (MIR[8])
 		begin
-			MDR_in = RAM_data;
+			MDR_in = C;
 		end
 		else
 		begin
-			MDR_in = A;
+			MDR_in = RAM_data;
 		end
 
 		H_out_en = 1'b0;

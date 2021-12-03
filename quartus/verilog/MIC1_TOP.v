@@ -17,13 +17,14 @@ module MIC1_TOP(
 	output [7:0]data;
 	wire N, Z;
 	wire [35:0] MIR;
-	wire [31:0] MBR, q_rom, q_ram, A, B, C, MAR, MDR, PC, out;
+	wire [31:0] MBR_ao, q_rom, q_ram, A, B, C, MAR, MDR, PC, out;
 	wire [8:0] MPC;
 
 	virtual_input Input(
 		.switch0(switch0),
 		.switch1(switch1),
 		.switch2(switch2),
+		.switch16(switch16),
 		.switch17(switch17),
 		.button0(button0),
 		.number(number),
@@ -37,12 +38,12 @@ module MIC1_TOP(
 		.MDR_in(MDR), 
 		.MAR_in(MAR), 
 		.PC_in(PC), 
-		.MBR_in(MBR), 
+		.MBR_in(MBR_ao[7:0]), 
 		.SP_in(SP_ao), 
 		.TOS_in(TOS_ao), 
 		.OPC_in(OPC_ao), 
-		.CPP_in(CPP_ao), 
-		.LV_in(LV_ao),
+		.CPP_in({ {23{1'b0}}, MPC}), 
+		.LV_in(B),
 		.H_in(A),
 		.enable(enable),
 		.rs(rs),
@@ -53,6 +54,7 @@ module MIC1_TOP(
 
 	MIC1 datapath(
 		.clock(button0),
+		.reset(!switch16),
 		.ROM_data(q_rom),
 		.RAM_data(q_ram),
 		.C(C),
@@ -60,14 +62,14 @@ module MIC1_TOP(
 		.MAR(MAR),
 		.MDR(MDR),
 		.PC(PC),
-		.MBR(MBR),
 		.A(A),
 		.B(B),
 		.SP_ao(SP_ao), 
 		.TOS_ao(TOS_ao), 
 		.OPC_ao(OPC_ao), 
 		.CPP_ao(CPP_ao), 
-		.LV_ao(LV_ao)
+		.LV_ao(LV_ao),
+		.MBR_ao(MBR_ao)
 	);
 
 	ULA ula(
@@ -87,10 +89,10 @@ module MIC1_TOP(
 
 	controlpath CONTROL(
 		.clk(button0),
-		.rst(reset),
+		.rst(!switch16),
 		.N(N),
 		.Z(Z),
-		.MBR(MBR[7:0]),
+		.MBR(MBR_ao[7:0]),
 		.MIR(MIR[35:24]),
 		.MPC(MPC)
 	);
@@ -102,17 +104,17 @@ module MIC1_TOP(
 	);
 
 	rom_program_mem	rom_program_mem_inst (
-		.address(PC),
+		.address(PC[9:0]),
 		.clock(button0),
-		.q(MBR_in)
+		.q(q_rom)
 	);
 	
 	
 	ram_data_mem ram_data_mem_inst (
-		.address({2'b00, MAR[31:2]} ),
+		.address(MAR[11:2]),
 		.clock(button0),
-		.q(MDR_in),
-		.data(MDR_out),
+		.q(q_ram),
+		.data(MDR),
 		.wren(MIR[6])
 	);
 

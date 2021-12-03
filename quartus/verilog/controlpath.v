@@ -24,7 +24,7 @@ module controlpath(
 	reg N_s, Z_s;
 
 	wire high_bit;
-	assign high_bit = (jumpZ && Z_s) || (jumpN && N_s) || next_addr[8];
+	assign high_bit = (jumpZ && Z_s) || (jumpN && N_s) || MIR[35];
 
 
 	always @(posedge clk) 
@@ -37,9 +37,9 @@ module controlpath(
 			N_s <= N;
 			Z_s <= Z;
 			if (jump )
-				MPC <= { high_bit, next_addr[7:0] }; 
+				MPC <= { high_bit, MBR[7:0] }; 
 			else
-				MPC <= { high_bit, next_addr[7:0] | MBR}; 
+				MPC <= { high_bit, MIR[34:27]}; 
 		end
 	end
 
